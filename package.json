@@ -1,0 +1,28 @@
+{
+  "name": "land-real-estate-backend",
+  "version": "1.0.0",
+  "description": "backend for land real estate",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "pascal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.5.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.3",
+    "mongose": "^0.0.2-security",
+    "nodemon": "^3.1.14",
+    "validator": "^13.15.35",
+    "xss-clean": "^0.1.4"
+  }
+}
