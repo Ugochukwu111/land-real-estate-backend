@@ -37,22 +37,22 @@ export function validateRegisterUserFields(
   }
 
   if (!validator.isEmail(email)) {
-    return res.status(400).json({ emailError: "must be an email" });
+    return res.status(400).json({ error: "must be an email" });
   }
   if (!phoneNumber.startsWith("234")) {
-    return res.status(400).json({ phoneNumberError: "must  start with 234" });
+    return res.status(400).json({ error: "must  start with 234" });
   } else if (phoneNumber.length !== 13) {
     return res
       .status(400)
-      .json({ phoneNumberError: "length must be 13, starting with 234" });
+      .json({ error: "length must be 13, starting with 234" });
   } else if (!isOnlyNumbers(phoneNumber)) {
-    return res.status(400).json({ phoneNumberError: "only numbers allowed" });
+    return res.status(400).json({ error: "phone number : only numbers allowed" });
   }
-  if (password.length <= 6) {
-    return res.status(400).json({ passwordError: "too short" });
+  if (password.length <= 7) {
+    return res.status(400).json({ error: "password is too short" });
   }
   if (!/[a-z]/i.test(password)) {
-    return res.status(400).json({ passwordError: "password must contain at least an alphabet" });
+    return res.status(400).json({ error: "password must contain at least an alphabet" });
   }
 
   return true;
