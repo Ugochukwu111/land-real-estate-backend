@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { validateRegisterUserFields } from "../helpers/validate.js";
 import User from "../models/User.js";
 import { generateTokens } from "../helpers/generateTokens.js";
-
+import { generateAndSendOTP } from "../helpers/SendOtp.js";
 /**
  * @controller registerUser
  * @description Core registration pipeline for the Dilux platform. Handles input formatting,
@@ -60,11 +60,28 @@ export async function registerUser(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    try{
+      await generateAndSendOTP(newUser.email);
+      console.log('otp sent')
+    }catch(otpError){
+      console.error(`OTP Dispatch Failed for ${newUser.email}:`, otpError.message);
+      
+      return res.status(201).json({
+        success: true,
+        message: "Account created, but we experienced a delay sending your verification email. Please click 'Resend OTP' on the next screen.",
+        accessToken,
+      });
+    }
+    
+
     return res.status(201).json({
       message: "Success! An OTP has been sent to your email.",
       success: true,
+      email: newUser.email,
       accessToken,
     });
+
+
   } catch (err) {
     console.error(`Register User error: ${err.message}  `);
     return res.status(500).json({ error: "Registration Failed" });
