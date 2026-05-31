@@ -15,7 +15,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * @param {string} email - The user's registered email address.
  */
 
-export const generateAndSendOTP = async (email) => {
+export const generateAndSendOTP = async (email, title = "Verify Your Email Address (Sign Up) ") => {
   try {
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
     console.log(otp)
@@ -33,12 +33,19 @@ export const generateAndSendOTP = async (email) => {
   
       from: "Dilux Security <onboarding@resend.dev>",
       to: email,
-      subject: "Verify Your Account - Dilux",
+      subject: title,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto;">
-          <h2>Welcome to Dilux!</h2>
-          <p>Your account security is our priority. Please use the verification code below to complete your registration.</p>
-          <h1 style="font-size: 40px; letter-spacing: 5px; color: #3b82f6;">${otp}</h1>
+          <h2>
+          ${title.includes("Forget Password") ? "Password Reset Request" : "Email Verification"}
+          </h2>
+          <p>
+          Your account security is our priority. 
+          Please use the verification code below to complete your registration.
+          </p>
+          <h1 style="font-size: 40px; letter-spacing: 5px; color: #3b82f6;">
+          ${otp}
+          </h1>
           <p>This code will expire in <strong>15 minutes</strong>.</p>
           <p>If you did not request this, please ignore this email.</p>
         </div>
