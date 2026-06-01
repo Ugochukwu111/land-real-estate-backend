@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 
 export default async function forgotPassword(req, res) {
   const { email, password } = req.body;
-  console.log('hit')
   /*=============================================
     VALIDATION
   =================================================

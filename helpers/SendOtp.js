@@ -18,7 +18,6 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const generateAndSendOTP = async (email, title = "Verify Your Email Address (Sign Up) ") => {
   try {
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
-    console.log(otp)
 
     const hashedOTP = await bcrypt.hash(otp, 10);
 

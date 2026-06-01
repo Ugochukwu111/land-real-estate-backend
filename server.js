@@ -41,7 +41,6 @@ app.use(xss());
 app.use(limiter);
 
 app.get("/", (req, res) => {
-  console.log("");
   res.json({ message: "server ate" });
 });
 
