@@ -24,3 +24,12 @@ export const generateTokens = (userId) => {
 
   return { accessToken, refreshToken };
 }
+
+export const setRefreshToken = (res, refreshToken) =>{
+      res.cookie("refresh", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+}

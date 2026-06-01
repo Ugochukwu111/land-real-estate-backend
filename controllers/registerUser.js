@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { validateRegisterUserFields } from "../helpers/validate.js";
 import User from "../models/User.js";
-import { generateTokens } from "../helpers/generateTokens.js";
+import { generateTokens, setRefreshToken } from "../helpers/generateTokens.js";
 import { generateAndSendOTP } from "../helpers/SendOtp.js";
 /**
  * @controller registerUser
@@ -53,26 +53,23 @@ export async function registerUser(req, res) {
     await newUser.save();
     const { accessToken, refreshToken } = generateTokens(newUser._id);
 
-    res.cookie("refresh", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    setRefreshToken(res, refreshToken);
 
-    try{
+    try {
       await generateAndSendOTP(newUser.email);
-      console.log('otp sent')
-    }catch(otpError){
-      console.error(`OTP Dispatch Failed for ${newUser.email}:`, otpError.message);
-      
+    } catch (otpError) {
+      console.error(
+        `OTP Dispatch Failed for ${newUser.email}:`,
+        otpError.message,
+      );
+
       return res.status(201).json({
         success: true,
-        message: "Account created, but we experienced a delay sending your verification email. Please click 'Resend OTP' on the next screen.",
+        message:
+          "Account created, but we experienced a delay sending your verification email. Please click 'Resend OTP' on the next screen.",
         accessToken,
       });
     }
-    
 
     return res.status(201).json({
       message: "Success! An OTP has been sent to your email.",
@@ -80,8 +77,6 @@ export async function registerUser(req, res) {
       email: newUser.email,
       accessToken,
     });
-
-
   } catch (err) {
     console.error(`Register User error: ${err.message}  `);
     return res.status(500).json({ error: "Registration Failed" });
