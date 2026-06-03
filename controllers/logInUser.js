@@ -1,7 +1,7 @@
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
-import {  generateTokens, setRefreshToken } from "../helpers/generateTokens.js";
+import { generateTokens, setRefreshToken } from "../helpers/generateTokens.js";
 
 export default async function logInUser(req, res) {
   let { email, password } = req.body;
@@ -34,10 +34,14 @@ export default async function logInUser(req, res) {
     setRefreshToken(res, refreshToken);
 
     return res.status(201).json({
-      message: 'Login Successful',
+      message: "Login Successful",
+      user: {
+        role: existingUser.role,
+        id: existingUser._id,
+        fullName: existingUser.fullName,
+      },
       accessToken,
-    })
-
+    });
   } catch (err) {
     console.error("Login Error", err.message);
   }

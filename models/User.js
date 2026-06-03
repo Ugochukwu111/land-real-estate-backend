@@ -30,7 +30,22 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false,
-  }
+  },
+  hasCompletedProfile: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+    role: {
+    type: String,
+    enum: ["admin", "associate"],
+    default: "user",
+  },
+     rank: {
+    type: String,
+    required: true,
+    default: "associate",
+  },
 });
 
 const User = mongoose.model('User', userSchema);
