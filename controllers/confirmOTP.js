@@ -45,6 +45,11 @@ export async function confirmOTP(req, res) {
 
   return res.status(200).json({
     message: "Email verified successfully",
+      user: {
+        role: existingUser.role,
+        id: existingUser._id,
+        fullName: existingUser.fullName,
+      },
     accessToken,
   });
 }
