@@ -38,7 +38,7 @@ export async function confirmOTP(req, res) {
   }
 
   existingUser.isEmailVerified = true;
-  const { accessToken } = generateTokens(existingUser._id);
+  const { accessToken } = generateTokens(existingUser._id,  existingUser.role);
   await existingUser.save();
 
   await OTP.deleteMany({ email });

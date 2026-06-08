@@ -29,7 +29,7 @@ export default async function logInUser(req, res) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
 
-    const { accessToken, refreshToken } = generateTokens(existingUser._id);
+    const { accessToken, refreshToken } = generateTokens(existingUser._id, existingUser.role);
 
     setRefreshToken(res, refreshToken);
 

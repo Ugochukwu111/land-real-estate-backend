@@ -51,7 +51,7 @@ export async function registerUser(req, res) {
     });
 
     await newUser.save();
-    const { accessToken, refreshToken } = generateTokens(newUser._id);
+    const { accessToken, refreshToken } = generateTokens(newUser._id, newUser.role);
 
     setRefreshToken(res, refreshToken);
 
