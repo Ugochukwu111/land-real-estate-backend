@@ -7,6 +7,9 @@ import xss from "xss-clean";
 import { limiter } from "./middleware/ratelimit.js";
 
 import { authRouter } from "./routes/auth.js";
+import listingRouter from "./routes/listing.js";
+
+
 import connectDB from "./db/connectDB.js";
 
 dotenv.config();
@@ -45,6 +48,16 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter)
+
+
+app.use((err, req, res, next) => {
+  console.error("Global Error Caught:", err);
+  
+  res.status(500).json({ 
+    message: err.message || "An unknown error occurred in the middleware." 
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`server running on ${PORT}`);
