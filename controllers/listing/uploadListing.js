@@ -1,24 +1,42 @@
 import Listing from "../../models/Listing.js";
 
- const uploadListing = async (req, res) => {
+const uploadListing = async (req, res) => {
   try {
-    const { name, description, price, commissionPrice, location } = req.body;
+    const { name, description, price, commissionPrice, location, documents } =
+      req.body;
+
+    console.log(name, description, price, commissionPrice, location, documents);
+
+    let documentsArray = [];
+
+    if (documents) {
+      documentsArray = documents
+        .split(",") 
+        .map((doc) => doc.trim()); 
+    }
+    console.log(documentsArray)
 
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required." });
     }
 
-   const imageUrl = req.file ? req.file.path : null;
+    const imageUrl = req.file ? req.file.path : null;
 
-  let documentTags = req.body.documents || [];
+    let documentTags = req.body.documents || [];
     if (!Array.isArray(documentTags)) {
-      documentTags = [documentTags]; 
+      documentTags = [documentTags];
     }
 
     if (!name || !description || !price) {
       return res
         .status(400)
         .json({ message: "Name, description, and price are required." });
+    }
+
+    if(!location){
+            return res
+        .status(400)
+        .json({ message: "Location is required" });
     }
 
     const newListing = new Listing({
@@ -28,7 +46,8 @@ import Listing from "../../models/Listing.js";
       commissionPrice: Number(commissionPrice || 0),
       legalDocuments: documentTags,
       location: location,
-      image: imageUrl ,
+      image: imageUrl,
+      documents: documentsArray,
     });
 
     const savedListing = await newListing.save();
